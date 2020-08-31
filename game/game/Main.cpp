@@ -65,8 +65,8 @@ public:
         m_startButton.draw(ColorF(1.0, m_startTransition.value())).drawFrame(2);
         m_exitButton.draw(ColorF(1.0, m_exitTransition.value())).drawFrame(2);
 
-        FontAsset(U"Menu")(U"はじめる").drawAt(m_startButton.center(), ColorF(0.25));
-        FontAsset(U"Menu")(U"おわる").drawAt(m_exitButton.center(), ColorF(0.25));
+        FontAsset(U"Menu")(U"はじめる").drawAt(m_startButton.center(), ColorF(0.0, 1,0));
+        FontAsset(U"Menu")(U"おわる").drawAt(m_exitButton.center(), ColorF(0.0, 1,0));
 
         Rect(0, 500, Scene::Width(), Scene::Height() - 500)
             .draw(Arg::top = ColorF(0.0, 0.0), Arg::bottom = ColorF(0.0, 0.5));
@@ -103,7 +103,9 @@ private:
     int32 m_score = 0;
     
     //アイテム
-    int32 m_Triangle =  (300, 100, 80, 0_deg);
+    // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く
+    //Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
+
 
 public:
 
@@ -124,6 +126,10 @@ public:
 
         // ボールを移動
         m_ball.moveBy(m_ballVelocity * Scene::DeltaTime());
+
+        // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く アイテム
+        Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
+
 
         // ブロックを順にチェック
         for (auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
@@ -188,7 +194,8 @@ public:
         m_paddle.draw();
 
         // アイテム
-       
+        // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く
+        Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
     }
 };
 
@@ -200,7 +207,7 @@ void Main()
     FontAsset::Register(U"Score", 36, Typeface::Bold);
 
     // 背景色を設定
-    Scene::SetBackground(ColorF(0.2, 0.8, 0.4));
+    Scene::SetBackground(ColorF(0.0, 0,0));
 
     // シーンと遷移時の色を設定
     MyApp manager;
@@ -215,7 +222,9 @@ void Main()
         {
             break;
         }
+       
     }
+
 }
 
 //
