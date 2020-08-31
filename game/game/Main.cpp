@@ -85,7 +85,7 @@ private:
     static constexpr Size blockSize = Size(40, 20);
 
     // ボールの速さ
-    static constexpr double speed = 400.0;
+    static constexpr double speed = 350.0;
 
     // ブロックの配列
     Array<Rect> m_blocks;
@@ -101,13 +101,16 @@ private:
 
     // スコア
     int32 m_score = 0;
+    
+    //アイテム
+    int32 m_Triangle =  (300, 100, 80, 0_deg);
 
 public:
 
     Game(const InitData& init)
         : IScene(init)
     {
-        // 横 (Scene::Width() / blockSize.x) 個、縦 5 個のブロックを配列に追加する
+        // 横 (Scene::Width() / blockSize.x) 個、縦 7 個のブロックを配列に追加する
         for (auto p : step(Size((Scene::Width() / blockSize.x), 7)))
         {
             m_blocks << Rect(p.x * blockSize.x, 60 + p.y * blockSize.y, blockSize);
@@ -164,7 +167,7 @@ public:
         if (m_ballVelocity.y > 0 && m_paddle.intersects(m_ball))
         {
             // パドルの中心からの距離に応じてはね返る向きを変える
-            m_ballVelocity = Vec2((m_ball.x - m_paddle.center().x) * 10, -m_ballVelocity.y).setLength(speed);
+            m_ballVelocity = Vec2((m_ball.x - m_paddle.center().x) * 5, -m_ballVelocity.y).setLength(speed);
         }
     }
 
@@ -183,6 +186,9 @@ public:
 
         // パドルを描く
         m_paddle.draw();
+
+        // アイテム
+       
     }
 };
 
