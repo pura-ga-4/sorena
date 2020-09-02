@@ -5,7 +5,9 @@
 enum class State
 {
     Title,
-    Game
+    Game,
+    endkard,
+    aitm
 };
 
 // ゲームデータ
@@ -76,6 +78,7 @@ public:
     }
 };
 
+
 // ゲームシーン
 class Game : public MyApp::Scene
 {
@@ -83,9 +86,9 @@ private:
 
     // ブロックのサイズ
     static constexpr Size blockSize = Size(40, 20);
-
+     
     // ボールの速さ
-    static constexpr double speed = 350.0;
+    int32 speed = 350.0;
 
     // ブロックの配列
     Array<Rect> m_blocks;
@@ -101,13 +104,21 @@ private:
 
     // スコア
     int32 m_score = 0;
+
     
-    //アイテム
-    // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く
-    //Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
+    //アイテムの速さ
+    static constexpr double sss = 30.0;
+
+    // 座標 (x, y) を重心とする、1 辺が 16px の三角形を描く
+    Triangle m_t = Triangle(500 , 50 ,  16, 0_deg);
+
+    //アイテムの速度
+    Vec2 m_tVelocity = Vec2(0, sss);
+
 
 
 public:
+
 
     Game(const InitData& init)
         : IScene(init)
@@ -127,9 +138,8 @@ public:
         // ボールを移動
         m_ball.moveBy(m_ballVelocity * Scene::DeltaTime());
 
-        // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く アイテム
-        Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
-
+        // アイテムを移動
+       // m_t.moveBy(m_tVelocity * Scene::DeltaTime());
 
         // ブロックを順にチェック
         for (auto it = m_blocks.begin(); it != m_blocks.end(); ++it)
@@ -137,8 +147,24 @@ public:
             // ボールとブロックが交差していたら
             if (it->intersects(m_ball))
             {
-                // ボールの向きを反転する
-                (it->bottom().intersects(m_ball) || it->top().intersects(m_ball) ? m_ballVelocity.y : m_ballVelocity.x) *= -1;
+                
+                if (m_score % 5 == 0 && m_score != 0)
+                {
+                    speed = speed + 10;
+                    m_ballVelocity = Vec2(0, -speed);
+                    (it->bottom().intersects(m_ball) || it->top().intersects(m_ball) ? m_ballVelocity.y : m_ballVelocity.x) *= -1;
+
+                }
+                else
+                {
+                    // ボールの向きを反転する
+                    (it->bottom().intersects(m_ball) || it->top().intersects(m_ball) ? m_ballVelocity.y : m_ballVelocity.x) *= -1;
+
+
+                }
+                    
+            
+                
 
                 // ブロックを配列から削除（イテレータが無効になるので注意）
                 m_blocks.erase(it);
@@ -146,10 +172,14 @@ public:
                 // スコアを加算
                 ++m_score;
 
+                
                 // これ以上チェックしない  
+                
                 break;
             }
+            
         }
+        
 
         // 天井にぶつかったらはね返る
         if (m_ball.y < 0 && m_ballVelocity.y < 0)
@@ -175,11 +205,16 @@ public:
             // パドルの中心からの距離に応じてはね返る向きを変える
             m_ballVelocity = Vec2((m_ball.x - m_paddle.center().x) * 5, -m_ballVelocity.y).setLength(speed);
         }
+        //五回に一回超高速
+      //  if (m_score % 5 == 0 && m_score != 0)
+      //         {
+      //            m_ballVelocity *= 5;
+      //         }
     }
 
     void draw() const override
     {
-        FontAsset(U"Score")(m_score).drawAt(Scene::Center().x, 30);
+       FontAsset(U"Score")(m_score).drawAt(Scene::Center().x, 30);
 
         // すべてのブロックを描画する
         for (const auto& block : m_blocks)
@@ -193,14 +228,93 @@ public:
         // パドルを描く
         m_paddle.draw();
 
-        // アイテム
-        // 座標 (20, 10) を重心とする、1 辺が 8px の三角形を描く
-        Triangle(20, 10, 16, 0_deg).draw(Palette::Orange);
+        // アイテムを描く
+       // m_t.draw(Palette::Orange);
+        //アイテム描画
+        
+
+
     }
 };
 
+
+
+
+
+class endkard : public MyApp::Scene
+{
+private:
+
+    Rect m_startButton = Rect(Arg::center = Scene::Center().movedBy(0, 0), 300, 60);
+    Transition m_startTransition = Transition(0.4s, 0.2s);
+
+    Rect m_exitButton = Rect(Arg::center = Scene::Center().movedBy(0, 100), 300, 60);
+    Transition m_exitTransition = Transition(0.4s, 0.2s);
+
+public:
+
+    endkard(const InitData& init)
+        : IScene(init) {}
+
+    void update() override
+    {
+        m_startTransition.update(m_startButton.mouseOver());
+        m_exitTransition.update(m_exitButton.mouseOver());
+
+        if (m_startButton.mouseOver() || m_exitButton.mouseOver())
+        {
+            Cursor::RequestStyle(CursorStyle::Hand);
+        }
+
+        if (m_startButton.leftClicked())
+        {
+            changeScene(State::Game);
+        }
+
+        if (m_exitButton.leftClicked())
+        {
+            System::Exit();
+        }
+    }
+
+    void draw() const override
+    {
+        const String titleText = U"ブロックくずし";
+        const Vec2 center(Scene::Center().x, 120);
+        FontAsset(U"Title")(titleText).drawAt(center.movedBy(4, 6), ColorF(0.0, 0.5));
+        FontAsset(U"Title")(titleText).drawAt(center);
+
+        m_startButton.draw(ColorF(1.0, m_startTransition.value())).drawFrame(2);
+        m_exitButton.draw(ColorF(1.0, m_exitTransition.value())).drawFrame(2);
+
+        FontAsset(U"Menu")(U"タイトルへ").drawAt(m_startButton.center(), ColorF(0.0, 1, 0));
+        FontAsset(U"Menu")(U"おわる").drawAt(m_exitButton.center(), ColorF(0.0, 1, 0));
+
+        Rect(0, 500, Scene::Width(), Scene::Height() - 500)
+            .draw(Arg::top = ColorF(0.0, 0.0), Arg::bottom = ColorF(0.0, 0.5));
+
+        const int32 highScore = getData().highScore;
+        FontAsset(U"Score")(U"High score: {}"_fmt(highScore)).drawAt(Vec2(620, 550));
+    }
+};
+
+
+//エンド画面class end : public MyApp::Scene
+  //  {
+  //  private:
+//
+  //      Rect m_startButton = Rect(Arg::center = Scene::Center().movedBy(0, 0), 300, 60);
+   //     Transition m_startTransition = Transition(0.4s, 0.2s);
+//
+   //     Rect m_exitButton = Rect(Arg::center = Scene::Center().movedBy(0, 100), 300, 60);
+   //     Transition m_exitTransition = Transition(0.4s, 0.2s);
+
+ //   };
+
+
 void Main()
 {
+   
     // 使用するフォントアセットを登録
     FontAsset::Register(U"Title", 120, U"example/font/AnnyantRoman/AnnyantRoman.ttf");
     FontAsset::Register(U"Menu", 30, Typeface::Regular);
