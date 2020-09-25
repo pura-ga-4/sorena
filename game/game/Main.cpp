@@ -67,8 +67,8 @@ public:
         m_startButton.draw(ColorF(1.0, m_startTransition.value())).drawFrame(2);
         m_exitButton.draw(ColorF(1.0, m_exitTransition.value())).drawFrame(2);
 
-        FontAsset(U"Menu")(U"はじめる").drawAt(m_startButton.center(), ColorF(0.0, 1,0));
-        FontAsset(U"Menu")(U"おわる").drawAt(m_exitButton.center(), ColorF(0.0, 1,0));
+        FontAsset(U"Menu")(U"はじめる").drawAt(m_startButton.center(), ColorF(0.0, 1, 0));
+        FontAsset(U"Menu")(U"おわる").drawAt(m_exitButton.center(), ColorF(0.0, 1, 0));
 
         Rect(0, 500, Scene::Width(), Scene::Height() - 500)
             .draw(Arg::top = ColorF(0.0, 0.0), Arg::bottom = ColorF(0.0, 0.5));
@@ -76,27 +76,6 @@ public:
         const int32 highScore = getData().highScore;
         FontAsset(U"Score")(U"High score: {}"_fmt(highScore)).drawAt(Vec2(620, 550));
     }
-};
-
-class aitm : public MyApp::Scene
-{
-private:
-    Circle m_bb = Circle(400, 350, 8);
-    int32 sos = 375.0;
-    Vec2 m_bbV = Vec2(0, -sos);
-
-public:
-    void update() override
-    {
-        m_bb.moveBy(m_bbV * Scene::DeltaTime());
-    }
-
-    void draw() const override
-    {
-        m_bb.draw(Palette::Orange);
-    }
-
-
 };
 
 // ゲームシーン
@@ -109,7 +88,7 @@ private:
     static constexpr Size blockSize = Size(40, 20);
      
     // ボールの速さ
-    static constexpr double speed = 300.0;
+    static constexpr double speed = 325.0;
 
     // ブロックの配列
     Array<Rect> m_blocks;
@@ -392,7 +371,7 @@ public:
             if (a->intersects(m_ball))
             {
                 //ボールが跳ね返る
-                (a->bottom().intersects(m_ball) || a->top().intersects(m_ball) ? m_ballVelocity.y : m_ballVelocity.x) *= -1;
+                //(a->bottom().intersects(m_ball) || a->top().intersects(m_ball) ? m_ballVelocity.y : m_ballVelocity.x) *= -1;
                 
                 //アイテムを消す
                 m_t.erase(a);
@@ -404,6 +383,146 @@ public:
                 break;
             }
 
+            if (a->intersects(m_bb))
+            {
+
+               // (a->bottom().intersects(m_bb) || a->top().intersects(m_bb) ? m_bbV.y : m_bbV.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            //ボール２
+            if (a->intersects(m_b2))
+            {
+
+               // (a->bottom().intersects(m_b2) || a->top().intersects(m_b2) ? m_b2V.y : m_b2V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+                // これ以上チェックしない  
+                break;
+            }
+
+            //ボール3
+            if (a->intersects(m_b3))
+            {
+
+              //  (a->bottom().intersects(m_b3) || a->top().intersects(m_b3) ? m_b3V.y : m_b3V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            // ボール4
+            if (a->intersects(m_b4))
+            {
+
+              //  (a->bottom().intersects(m_b4) || a->top().intersects(m_b4) ? m_b4V.y : m_b4V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            // ボール5
+            if (a->intersects(m_b5))
+            {
+
+               // (a->bottom().intersects(m_b5) || a->top().intersects(m_b5) ? m_b5V.y : m_b5V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            //ボール６
+            if (a->intersects(m_b6))
+            {
+
+               // (a->bottom().intersects(m_b6) || a->top().intersects(m_b6) ? m_b6V.y : m_b6V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            //ボール7
+            if (a->intersects(m_b7))
+            {
+
+               // (a->bottom().intersects(m_b7) || a->top().intersects(m_b7) ? m_b7V.y : m_b7V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+                // これ以上チェックしない  
+                break;
+            }
+
+            //ボール8
+            if (a->intersects(m_b8))
+            {
+
+               // (a->bottom().intersects(m_b8) || a->top().intersects(m_b8) ? m_b8V.y : m_b8V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
+
+            // ボール9
+            if (a->intersects(m_b9))
+            {
+
+               // (a->bottom().intersects(m_b9) || a->top().intersects(m_b9) ? m_b9V.y : m_b9V.x) *= -1;
+
+                // ブロックを配列から削除（イテレータが無効になるので注意）
+                m_t.erase(a);
+
+                // スコアを加算
+                ++m_tp;
+
+                // これ以上チェックしない  
+                break;
+            }
         
        
         }
@@ -501,7 +620,7 @@ public:
         if (m_ballVelocity.y > 0 && m_paddle.intersects(m_ball))
         {
             // パドルの中心からの距離に応じてはね返る向きを変える
-            m_ballVelocity = Vec2((m_ball.x - m_paddle.center().x) * 5, -m_ballVelocity.y).setLength(speed);
+            m_ballVelocity = Vec2((m_ball.x - m_paddle.center().x) * 7, -m_ballVelocity.y).setLength(speed);
         }
     
         
@@ -519,7 +638,7 @@ public:
         if (m_bbV.y > 0 && m_paddle.intersects(m_bb))
         {
             // ボールbパドルの中心からの距離に応じてはね返る向きを変える
-            m_bbV = Vec2((m_bb.x - m_paddle.center().x) * 5, -m_bbV.y).setLength(speed);
+            m_bbV = Vec2((m_bb.x - m_paddle.center().x) * 7, -m_bbV.y).setLength(speed);
         }
 
         //ボール２ 天井にぶつかったらはね返る
@@ -536,7 +655,7 @@ public:
         if (m_b2V.y > 0 && m_paddle.intersects(m_b2))
         {
             // ボールbパドルの中心からの距離に応じてはね返る向きを変える
-            m_b2V = Vec2((m_b2.x - m_paddle.center().x) * 5, -m_b2V.y).setLength(speed);
+            m_b2V = Vec2((m_b2.x - m_paddle.center().x) * 7, -m_b2V.y).setLength(speed);
         }
 
         //ボール3 天井にぶつかったらはね返る
@@ -553,7 +672,7 @@ public:
         if (m_b3V.y > 0 && m_paddle.intersects(m_b3))
         {
             // ボール3パドルの中心からの距離に応じてはね返る向きを変える
-            m_b3V = Vec2((m_b3.x - m_paddle.center().x) * 5, -m_b3V.y).setLength(speed);
+            m_b3V = Vec2((m_b3.x - m_paddle.center().x) * 7, -m_b3V.y).setLength(speed);
         }
 
         //ボール4天井にぶつかったらはね返る
@@ -570,7 +689,7 @@ public:
         if (m_b4V.y > 0 && m_paddle.intersects(m_b4))
         {
             // ボール4パドルの中心からの距離に応じてはね返る向きを変える
-            m_b4V = Vec2((m_b4.x - m_paddle.center().x) * 5, -m_b4V.y).setLength(speed);
+            m_b4V = Vec2((m_b4.x - m_paddle.center().x) * 7, -m_b4V.y).setLength(speed);
         }
 
         //ボール5 天井にぶつかったらはね返る
@@ -587,7 +706,7 @@ public:
         if (m_b5V.y > 0 && m_paddle.intersects(m_b5))
         {
             // ボール5パドルの中心からの距離に応じてはね返る向きを変える
-            m_b5V = Vec2((m_b5.x - m_paddle.center().x) * 5, -m_b5V.y).setLength(speed);
+            m_b5V = Vec2((m_b5.x - m_paddle.center().x) * 7, -m_b5V.y).setLength(speed);
         }
 
         //ボール6 天井にぶつかったらはね返る
@@ -604,7 +723,7 @@ public:
         if (m_b6V.y > 0 && m_paddle.intersects(m_b6))
         {
             // ボール6パドルの中心からの距離に応じてはね返る向きを変える
-            m_b6V = Vec2((m_b6.x - m_paddle.center().x) * 5, -m_b6V.y).setLength(speed);
+            m_b6V = Vec2((m_b6.x - m_paddle.center().x) * 7, -m_b6V.y).setLength(speed);
         }
 
         //ボール7 天井にぶつかったらはね返る
@@ -621,7 +740,7 @@ public:
         if (m_b7V.y > 0 && m_paddle.intersects(m_b7))
         {
             // ボール7パドルの中心からの距離に応じてはね返る向きを変える
-            m_b7V = Vec2((m_b7.x - m_paddle.center().x) * 5, -m_b7V.y).setLength(speed);
+            m_b7V = Vec2((m_b7.x - m_paddle.center().x) * 7, -m_b7V.y).setLength(speed);
         }
 
         //ボール8天井にぶつかったらはね返る
@@ -638,7 +757,7 @@ public:
         if (m_b8V.y > 0 && m_paddle.intersects(m_b8))
         {
             // ボール8パドルの中心からの距離に応じてはね返る向きを変える
-            m_b8V = Vec2((m_b8.x - m_paddle.center().x) * 5, -m_b8V.y).setLength(speed);
+            m_b8V = Vec2((m_b8.x - m_paddle.center().x) * 7, -m_b8V.y).setLength(speed);
         }
 
         //ボール9 天井にぶつかったらはね返る
@@ -655,7 +774,7 @@ public:
         if (m_b9V.y > 0 && m_paddle.intersects(m_b9))
         {
             // ボール9パドルの中心からの距離に応じてはね返る向きを変える
-            m_b9V = Vec2((m_b9.x - m_paddle.center().x) * 5, -m_b9V.y).setLength(speed);
+            m_b9V = Vec2((m_b9.x - m_paddle.center().x) * 7, -m_b9V.y).setLength(speed);
         }
 
         //ボール10天井にぶつかったらはね返る
@@ -672,7 +791,7 @@ public:
         if (m_b10V.y > 0 && m_paddle.intersects(m_b10))
         {
             // ボール10パドルの中心からの距離に応じてはね返る向きを変える
-            m_b10V = Vec2((m_b10.x - m_paddle.center().x) * 5, -m_b10V.y).setLength(speed);
+            m_b10V = Vec2((m_b10.x - m_paddle.center().x) * 7, -m_b10V.y).setLength(speed);
         }
     }
 
